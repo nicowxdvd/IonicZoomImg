@@ -1,0 +1,20 @@
+page-home {
+  .pinch-zoom-container {
+    overflow: scroll;
+    height: 900px;
+  }
+
+  .pinch-zoom-image {
+    width: 100%;
+  }
+
+  .box{
+    width: 5000px;
+    height: 5000px;
+  }
+
+  img{
+    max-width: none !important;
+    border: none !important;
+  }
+}

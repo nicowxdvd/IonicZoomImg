@@ -1,0 +1,7 @@
+{
+  "name": "TestZoomBtn",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}

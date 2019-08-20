@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      ZoomIn & zoomOut
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <button ion-button color="dark" outline (click)="zoomIn()">Zoom In</button>
+  <button ion-button color="dark" outline (click)="zoomOut()">Zoom Out</button>
+
+  <div class="pinch-zoom-container">
+<!--     <img
+      id="pinch-zoom-image-id"
+      class="pinch-zoom-image"
+      src="https://demo.ccloud.cl/biblioteca/secure/uploads/555?api_token=1ba201a75469df1bdbfa66b2399694a1fe01ce2a7fbac8fafaed7c982a04e229bbd91cb1f846113ef8b5fadd4543632a0083&_dc=1562715843000" >
+
+     <div class="box">
+        <img
+        id      = "pinch-zoom-image-id"
+        class   = "pinch-zoom-image"
+        src     = "assets/imgs/planoTest.jpeg"
+        (pinch) = "handlerPinch($event)"
+        (pan)   = "handlerPan($event)"
+      >
+    </div>
+
+    <img
+      id      = "pinch-zoom-image-id"
+      class   = "pinch-zoom-image"
+      src     = "assets/imgs/planoTest.jpeg" >
+
+ -->
+
+    <img
+    id      = "pinch-zoom-image-id"
+    class   = "pinch-zoom-image"
+    src     = "assets/imgs/planoCCloud.png" >
+
+  </div>
+</ion-content>
