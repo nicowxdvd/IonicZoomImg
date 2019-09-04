@@ -34,9 +34,18 @@
  -->
 
     <img
-    id      = "pinch-zoom-image-id"
-    class   = "pinch-zoom-image"
-    src     = "assets/imgs/planoCCloud.png" >
+      id         = "pinch-zoom-image-id"
+      class      = "pinch-zoom-image"
+      src        = "assets/imgs/planoCCloud.png"
+      (load)     = "onImageLoad()"
+      (pan)      = "handlerPan($event)"
+      (pinch)    = "handlerPinch($event)"
+      (panend)   = "handlerPanend($event)"
+      (pinchend) = "handlerPinched($event)"
+      (doubletap)= "handlerDoubleTap()"
+      (Swipe)    = "handlerSwipè($event)"
+
+    >
 
   </div>
 </ion-content>

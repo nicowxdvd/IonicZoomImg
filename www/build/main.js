@@ -1,6 +1,6 @@
 webpackJsonp([0],{
 
-/***/ 109:
+/***/ 108:
 /***/ (function(module, exports) {
 
 function webpackEmptyAsyncContext(req) {
@@ -13,11 +13,11 @@ function webpackEmptyAsyncContext(req) {
 webpackEmptyAsyncContext.keys = function() { return []; };
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
 module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 109;
+webpackEmptyAsyncContext.id = 108;
 
 /***/ }),
 
-/***/ 150:
+/***/ 149:
 /***/ (function(module, exports) {
 
 function webpackEmptyAsyncContext(req) {
@@ -30,19 +30,17 @@ function webpackEmptyAsyncContext(req) {
 webpackEmptyAsyncContext.keys = function() { return []; };
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
 module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 150;
+webpackEmptyAsyncContext.id = 149;
 
 /***/ }),
 
-/***/ 194:
+/***/ 193:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_hammerjs__ = __webpack_require__(99);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_hammerjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_hammerjs__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -52,7 +50,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-
 
 
 var MIN_SCALE = 1; // 1=scaling when first loaded
@@ -84,10 +81,13 @@ var HomePage = /** @class */ (function () {
         this.curHeight = 0;
         this.pinchCenterOffset = null;
     }
-    HomePage.prototype.ionViewDidEnter = function () {
+    HomePage.prototype.ionViewDidLoad = function () {
         this.img = document.getElementById('pinch-zoom-image-id');
+        console.log(JSON.stringify(this.img));
+    };
+    HomePage.prototype.onImageLoad = function () {
         this.container = this.img.parentElement;
-        //this.disableImgEventHandlers();
+        //this.disableImiogEventHandlers();
         this.imgWidth = this.img.width;
         this.imgHeight = this.img.height;
         this.viewportWidth = this.img.offsetWidth;
@@ -96,46 +96,88 @@ var HomePage = /** @class */ (function () {
         this.viewportHeight = this.img.parentElement.offsetHeight;
         this.curWidth = this.imgWidth * this.scale;
         this.curHeight = this.imgHeight * this.scale;
-        var that = this;
-        var hammer = new __WEBPACK_IMPORTED_MODULE_2_hammerjs__(that.container, {
-            domEvents: true
-        });
-        hammer.get('pinch').set({
-            enable: true
-        });
-        hammer.on('pan', function (e) {
-            console.log('pan');
-            that.translate(e.deltaX, e.deltaY);
-        });
-        hammer.on('panend', function (e) {
-            console.log('panend');
-            that.updateLastPos();
-        });
-        hammer.on('pinch', function (e) {
-            console.log('pinch');
-            if (that.pinchCenter === null) {
-                that.pinchCenter = that.rawCenter(e);
-                var offsetX = that.pinchCenter.x * that.scale - (-that.x * that.scale + Math.min(that.viewportWidth, that.curWidth) / 2);
-                var offsetY = that.pinchCenter.y * that.scale - (-that.y * that.scale + Math.min(that.viewportHeight, that.curHeight) / 2);
-                that.pinchCenterOffset = { x: offsetX, y: offsetY };
-            }
-            var newScale = that.restrictScale(that.scale * e.scale);
-            var zoomX = that.pinchCenter.x * newScale - that.pinchCenterOffset.x;
-            var zoomY = that.pinchCenter.y * newScale - that.pinchCenterOffset.y;
-            var zoomCenter = { x: zoomX / newScale, y: zoomY / newScale };
-            that.zoomAround(e.scale, zoomCenter.x, zoomCenter.y, true);
-        });
-        hammer.on('pinchend', function (e) {
-            console.log('pinchend');
-            that.updateLastScale();
-            that.updateLastPos();
-            that.pinchCenter = null;
-        });
-        hammer.on('doubletap', function (e) {
-            console.log('doubletap');
-            var c = that.rawCenter(e);
-            that.zoomAround(2, c.x, c.y, true);
-        });
+        /*       var that = this;
+        
+              var hammer = new Hammer(that.container, {
+                domEvents: true
+              });
+        
+              hammer.get('pinch').set({
+                enable: true
+              });
+        
+              hammer.on('pan', function (e) {
+                console.log('pan');
+                that.translate(e.deltaX, e.deltaY);
+              });
+        
+              hammer.on('panend', function (e) {
+                console.log('panend');
+                that.updateLastPos();
+              });
+        
+              hammer.on('pinch', function (e) {
+                console.log('pinch');
+        
+                if(that.pinchCenter === null) {
+                  that.pinchCenter = that.rawCenter(e);
+                  var offsetX = that.pinchCenter.x*that.scale - (-that.x*that.scale + Math.min(that.viewportWidth, that.curWidth)/2);
+                  var offsetY = that.pinchCenter.y*that.scale - (-that.y*that.scale + Math.min(that.viewportHeight, that.curHeight)/2);
+                  that.pinchCenterOffset = { x: offsetX, y: offsetY };
+                }
+                var newScale = that.restrictScale(that.scale*e.scale);
+                var zoomX = that.pinchCenter.x*newScale - that.pinchCenterOffset.x;
+                var zoomY = that.pinchCenter.y*newScale - that.pinchCenterOffset.y;
+                var zoomCenter = { x: zoomX/newScale, y: zoomY/newScale };
+        
+                that.zoomAround(e.scale, zoomCenter.x, zoomCenter.y, true);
+              });
+        
+              hammer.on('pinchend', function (e) {
+                console.log('pinchend');
+                that.updateLastScale();
+                that.updateLastPos();
+                that.pinchCenter = null;
+              });
+        
+              hammer.on('doubletap', function (e) {
+                console.log('doubletap');
+                var c = that.rawCenter(e);
+                that.zoomAround(2, c.x, c.y,true);
+              }); */
+    };
+    HomePage.prototype.handlerPan = function (e) {
+        console.log('handlerPan');
+        this.translate(e.deltaX, e.deltaY);
+    };
+    HomePage.prototype.handlerPinch = function (e) {
+        console.log('handlerPinch');
+        if (this.pinchCenter === null) {
+            this.pinchCenter = this.rawCenter(e);
+            var offsetX = this.pinchCenter.x * this.scale - (-this.x * this.scale + Math.min(this.viewportWidth, this.curWidth) / 2);
+            var offsetY = this.pinchCenter.y * this.scale - (-this.y * this.scale + Math.min(this.viewportHeight, this.curHeight) / 2);
+            this.pinchCenterOffset = { x: offsetX, y: offsetY };
+        }
+        var newScale = this.restrictScale(this.scale * e.scale);
+        var zoomX = this.pinchCenter.x * newScale - this.pinchCenterOffset.x;
+        var zoomY = this.pinchCenter.y * newScale - this.pinchCenterOffset.y;
+        var zoomCenter = { x: zoomX / newScale, y: zoomY / newScale };
+        this.zoomAround(e.scale, zoomCenter.x, zoomCenter.y, true);
+    };
+    HomePage.prototype.handlerPanend = function (e) {
+        console.log('handlerPanend');
+        this.updateLastPos();
+    };
+    HomePage.prototype.handlerPinched = function (e) {
+        console.log('handlerPinched');
+        this.updateLastScale();
+        this.updateLastPos();
+        this.pinchCenter = null;
+    };
+    HomePage.prototype.handlerDoubleTap = function (e) {
+        console.log('handlerDoubleTap');
+        var c = this.rawCenter(e);
+        this.zoomAround(2, c.x, c.y, true);
     };
     HomePage.prototype.disableImgEventHandlers = function () {
         var events = ['onclick', 'onmousedown', 'onmousemove', 'onmouseout', 'onmouseover', 'onmouseup', 'ondblclick', 'onfocus', 'onblur'];
@@ -224,14 +266,14 @@ var HomePage = /** @class */ (function () {
         this.zoomAround(scaleBy, zoomX, zoomY, false);
     };
     HomePage.prototype.zoomIn = function () {
-        this.zoomCenter(2);
+        this.zoomCenter(1 / 2);
     };
     HomePage.prototype.zoomOut = function () {
         this.zoomCenter(1 / 2);
     };
     HomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-home',template:/*ion-inline-start:"/Users/nico/Dropbox/Workspace/Ionic/TestZoomBtn/src/pages/home/home.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      ZoomIn & zoomOut\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <button ion-button color="dark" outline (click)="zoomIn()">Zoom In</button>\n  <button ion-button color="dark" outline (click)="zoomOut()">Zoom Out</button>\n\n  <div class="pinch-zoom-container">\n<!--     <img\n      id="pinch-zoom-image-id"\n      class="pinch-zoom-image"\n      src="https://demo.ccloud.cl/biblioteca/secure/uploads/555?api_token=1ba201a75469df1bdbfa66b2399694a1fe01ce2a7fbac8fafaed7c982a04e229bbd91cb1f846113ef8b5fadd4543632a0083&_dc=1562715843000" >\n\n     <div class="box">\n        <img\n        id      = "pinch-zoom-image-id"\n        class   = "pinch-zoom-image"\n        src     = "assets/imgs/planoTest.jpeg"\n        (pinch) = "handlerPinch($event)"\n        (pan)   = "handlerPan($event)"\n      >\n    </div>\n\n    <img\n      id      = "pinch-zoom-image-id"\n      class   = "pinch-zoom-image"\n      src     = "assets/imgs/planoTest.jpeg" >\n\n -->\n\n    <img\n    id      = "pinch-zoom-image-id"\n    class   = "pinch-zoom-image"\n    src     = "assets/imgs/planoWebp.webp" >\n\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Users/nico/Dropbox/Workspace/Ionic/TestZoomBtn/src/pages/home/home.html"*/
+            selector: 'page-home',template:/*ion-inline-start:"/Users/nico/Dropbox/Workspace/Ionic/IonicZoomImg/src/pages/home/home.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      ZoomIn & zoomOut\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <button ion-button color="dark" outline (click)="zoomIn()">Zoom In</button>\n  <button ion-button color="dark" outline (click)="zoomOut()">Zoom Out</button>\n\n  <div class="pinch-zoom-container">\n<!--     <img\n      id="pinch-zoom-image-id"\n      class="pinch-zoom-image"\n      src="https://demo.ccloud.cl/biblioteca/secure/uploads/555?api_token=1ba201a75469df1bdbfa66b2399694a1fe01ce2a7fbac8fafaed7c982a04e229bbd91cb1f846113ef8b5fadd4543632a0083&_dc=1562715843000" >\n\n     <div class="box">\n        <img\n        id      = "pinch-zoom-image-id"\n        class   = "pinch-zoom-image"\n        src     = "assets/imgs/planoTest.jpeg"\n        (pinch) = "handlerPinch($event)"\n        (pan)   = "handlerPan($event)"\n      >\n    </div>\n\n    <img\n      id      = "pinch-zoom-image-id"\n      class   = "pinch-zoom-image"\n      src     = "assets/imgs/planoTest.jpeg" >\n\n -->\n\n    <img\n      id         = "pinch-zoom-image-id"\n      class      = "pinch-zoom-image"\n      src        = "assets/imgs/planoCCloud.png"\n      (load)     = "onImageLoad()"\n      (pan)      = "handlerPan($event)"\n      (pinch)    = "handlerPinch($event)"\n      (panend)   = "handlerPanend($event)"\n      (pinchend) = "handlerPinched($event)"\n      (doubletap)= "handlerDoubleTap()"\n      (Swipe)    = "handlerSwipè($event)"\n\n    >\n\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Users/nico/Dropbox/Workspace/Ionic/IonicZoomImg/src/pages/home/home.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* NavController */]])
     ], HomePage);
@@ -249,7 +291,7 @@ var HomePage = /** @class */ (function () {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(196);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(218);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_hammerjs__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_hammerjs__ = __webpack_require__(194);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_hammerjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_hammerjs__);
 
 
@@ -268,11 +310,11 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(190);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__ = __webpack_require__(193);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(189);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__ = __webpack_require__(192);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_component__ = __webpack_require__(268);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_home_home__ = __webpack_require__(194);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_hammerjs__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_home_home__ = __webpack_require__(193);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_hammerjs__ = __webpack_require__(194);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_hammerjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_hammerjs__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -358,9 +400,9 @@ var AppModule = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyApp; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(193);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(190);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_home_home__ = __webpack_require__(194);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(192);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(189);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_home_home__ = __webpack_require__(193);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -386,7 +428,7 @@ var MyApp = /** @class */ (function () {
         });
     }
     MyApp = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"/Users/nico/Dropbox/Workspace/Ionic/TestZoomBtn/src/app/app.html"*/'<ion-nav [root]="rootPage"></ion-nav>\n'/*ion-inline-end:"/Users/nico/Dropbox/Workspace/Ionic/TestZoomBtn/src/app/app.html"*/
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"/Users/nico/Dropbox/Workspace/Ionic/IonicZoomImg/src/app/app.html"*/'<ion-nav [root]="rootPage"></ion-nav>\n'/*ion-inline-end:"/Users/nico/Dropbox/Workspace/Ionic/IonicZoomImg/src/app/app.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* Platform */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */]])
     ], MyApp);

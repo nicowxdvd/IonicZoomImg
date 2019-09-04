@@ -40,12 +40,21 @@ export class HomePage {
   curHeight       = 0;
   pinchCenterOffset = null;
 
-  constructor(public navCtrl: NavController) {}
+  constructor(public navCtrl: NavController) {
 
-  ionViewDidEnter(){
-      this.img = document.getElementById('pinch-zoom-image-id');
+    
+  }
+
+  ionViewDidLoad(){
+    this.img = document.getElementById('pinch-zoom-image-id');
+    console.log(JSON.stringify(this.img));
+  }
+
+
+  onImageLoad(){
+      
       this.container = this.img.parentElement;
-      //this.disableImgEventHandlers();
+      //this.disableImiogEventHandlers();
       this.imgWidth = this.img.width;
       this.imgHeight = this.img.height;
       this.viewportWidth = this.img.offsetWidth;
@@ -55,7 +64,7 @@ export class HomePage {
       this.curWidth = this.imgWidth* this.scale;
       this.curHeight = this.imgHeight*this.scale;
 
-      var that = this;
+/*       var that = this;
 
       var hammer = new Hammer(that.container, {
         domEvents: true
@@ -103,7 +112,46 @@ export class HomePage {
         console.log('doubletap');
         var c = that.rawCenter(e);
         that.zoomAround(2, c.x, c.y,true);
-      });
+      }); */
+  }
+
+  handlerPan(e){
+    console.log('handlerPan');
+    this.translate(e.deltaX, e.deltaY);
+  }
+
+  handlerPinch(e){
+    console.log('handlerPinch');
+    if(this.pinchCenter === null) {
+      this.pinchCenter = this.rawCenter(e);
+      var offsetX = this.pinchCenter.x* this.scale - (-this.x*this.scale + Math.min(this.viewportWidth, this.curWidth)/2);
+      var offsetY = this.pinchCenter.y*this.scale - (-this.y*this.scale + Math.min(this.viewportHeight, this.curHeight)/2);
+      this.pinchCenterOffset = { x: offsetX, y: offsetY };
+    }
+    var newScale = this.restrictScale(this.scale*e.scale);
+    var zoomX = this.pinchCenter.x*newScale - this.pinchCenterOffset.x;
+    var zoomY = this.pinchCenter.y*newScale - this.pinchCenterOffset.y;
+    var zoomCenter = { x: zoomX/newScale, y: zoomY/newScale };
+
+    this.zoomAround(e.scale, zoomCenter.x, zoomCenter.y, true);
+  }
+
+  handlerPanend(e){
+    console.log('handlerPanend');
+    this.updateLastPos();
+  }
+
+  handlerPinched(e){
+    console.log('handlerPinched');
+    this.updateLastScale();
+    this.updateLastPos();
+    this.pinchCenter = null;
+  }
+
+  handlerDoubleTap(e){
+    console.log('handlerDoubleTap');
+    var c = this.rawCenter(e);
+    this.zoomAround(2, c.x, c.y,true);
   }
 
 
@@ -218,7 +266,7 @@ export class HomePage {
   }
 
   zoomIn() {
-    this.zoomCenter(2);
+    this.zoomCenter(1/2);
   }
 
   zoomOut() {
